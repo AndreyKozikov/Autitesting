@@ -1,7 +1,4 @@
-import subprocess
-import pytest
-
-from utils.utils import checkout, exec_command, checkout_negative
+from Seminar3.utils import checkout_negative
 
 FOLDER_IN = "/home/wisdom/GB_tests/test_in"
 FOLDER_OUT = "/home/wisdom/GB_tests/test_out"

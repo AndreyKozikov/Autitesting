@@ -1,0 +1,7 @@
+FOLDER_IN : /home/wisdom/GB_tests/test_in
+FOLDER_OUT : /home/wisdom/GB_tests/test_out
+FOLDER_EXTRACT : /home/wisdom/GB_tests/extract
+COUNT : 5
+ARC_NAME : arch2
+FILE_SIZE : 1M
+ARC_TYPE: "zip"  # Тип архива, например, "7z", "zip", "tar", и т.д.

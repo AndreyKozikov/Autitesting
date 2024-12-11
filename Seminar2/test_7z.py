@@ -1,7 +1,4 @@
-import subprocess
-import pytest
-
-from utils.utils import checkout, calculate_crc32
+from utils import checkout, calculate_crc32
 
 FOLDER_IN = "/home/wisdom/GB_tests/test_in"
 FOLDER_OUT = "/home/wisdom/GB_tests/test_out"
@@ -36,7 +33,7 @@ def test_integrity_arc():
     assert checkout(f"7z t {FOLDER_OUT}/{ARC_NAME}", "Everything is Ok"), "testing archive TEST FAIL"
 
 def test_delete_from_arc():
-    assert checkout(f"7z d {FOLDER_OUT}/{ARC_NAME} test2",
+    assert checkout(f"7z d {FOLDER_OUT}/{ARC_NAME} {test2}",
                     "Everything is Ok"), "deleting from archive TEST FAIL"
 
 def test_update_arc():
