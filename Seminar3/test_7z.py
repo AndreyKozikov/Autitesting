@@ -55,7 +55,7 @@ class TestPositive:
     # Проверяем, что файл был успешно удален из архива.
     def test_delete_from_arc(self, clear_folders, make_folders, make_subfolders, make_files):
         result = []
-        result.append(checkout(f"7z a -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", "Everything is Ok"))
+        result.append(checkout(f"cd {FOLDER_IN}; 7z a -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", "Everything is Ok"))
         result.append(checkout(f"7z d -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE} {make_files[1]}", "Everything is Ok"))
         result.append(not checkout(f"7z l -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", make_files[1]))
         assert all(result), "deleting from archive TEST FAIL"
@@ -65,9 +65,9 @@ class TestPositive:
     # Проверяем, что новые файлы были успешно добавлены в архив.
     def test_update_arc(self, make_files):
         result = []
-        result.append(checkout(f"7z u -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", "Everything is Ok"))
+        result.append(checkout(f"cd {FOLDER_IN}; 7z u -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", "Everything is Ok"))
         for file in make_files:
-            result.append(not checkout(f"7z l -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", file))
+            result.append(checkout(f"7z l -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", file))
         assert all(result), "updating archive TEST FAIL"
 
     # Тест на вывод содержимого архива
@@ -79,7 +79,7 @@ class TestPositive:
         result = []
         result.append(checkout(f"cd {FOLDER_IN}; 7z a -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", "Everything is Ok"))
         for file in make_files:
-            result.append((f"7z l -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", file))
+            result.append(checkout(f"7z l -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}", file))
         assert all(result), "list contents of archive TEST FAIL"
 
 
@@ -105,7 +105,7 @@ class TestPositive:
     # Создаем архив.
     # Проверяем соответствие хеш-значения с ожидаемым значением CRC32 для всех файлов в архиве.
     def test_calculate_hash_arc(self, clear_folders, make_subfolders, make_files):
-        crc = calculate_crc32(f"crc32 {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}").strip().upper()
         exec_command(f"cd {FOLDER_IN}; 7z a -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}")
+        crc = calculate_crc32(f"crc32 {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}").strip().upper()
         assert checkout(f"7z h -t{ARC_TYPE} {FOLDER_OUT}/{ARC_NAME}.{ARC_TYPE}",
                         crc), "calculate hash values for files in archive TEST FAIL"
